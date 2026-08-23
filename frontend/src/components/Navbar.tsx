@@ -59,12 +59,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setActiveTab('menu')}
           >
             <Utensils size={18} />
-            {t.menu}
+            <span>{t.menu}</span>
           </button>
 
           <button className="nav-item ai-nav-btn" onClick={onOpenAI}>
             <Bot size={18} />
-            {t.aiAdvisor}
+            <span>{t.aiAdvisor}</span>
           </button>
 
           {user && (
@@ -73,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('orders')}
             >
               <Clock size={18} />
-              {t.myOrders}
+              <span>{t.myOrders}</span>
             </button>
           )}
 
@@ -83,53 +83,48 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('admin')}
             >
               <Shield size={18} />
-              {t.adminDashboard}
-            </button>
-          )}
-
-          {/* Language Switcher Toggle */}
-          <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} title="Switch Language / تغيير اللغة">
-            <Globe size={18} style={{ color: 'var(--primary)' }} />
-            <span>{lang === 'ar' ? 'English' : 'العربية'}</span>
-          </button>
-
-          <button className="btn btn-secondary cart-nav-btn" onClick={onOpenCart}>
-            <ShoppingBag size={18} />
-            {t.cart}
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-          </button>
-
-          {user ? (
-            <div className="user-profile-badge">
-              <span className="user-name">
-                {user.name} {user.role === 'admin' && <span className="admin-tag">({t.adminTag})</span>}
-              </span>
-              <button className="btn btn-secondary icon-btn" onClick={onLogout} title={t.signOut}>
-                <LogOut size={16} />
-              </button>
-            </div>
-          ) : (
-            <button className="btn btn-primary" onClick={onOpenAuth}>
-              <UserIcon size={18} />
-              {t.signIn}
+              <span>{t.adminDashboard}</span>
             </button>
           )}
         </nav>
 
-        {/* Mobile Quick Action Group (Lang + Cart + Hamburger Toggle) */}
-        <div className="mobile-actions mobile-only">
-          <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} style={{ padding: '6px 10px', fontSize: '0.8rem' }}>
-            <Globe size={16} style={{ color: 'var(--primary)' }} />
-            <span>{lang === 'ar' ? 'EN' : 'عربي'}</span>
+        {/* Right Header Action Group (Single & Unified) */}
+        <div className="header-actions">
+          {/* Language Switcher Button (Single) */}
+          <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} title="Switch Language / تغيير اللغة">
+            <Globe size={18} style={{ color: 'var(--primary)' }} />
+            <span className="lang-label">{lang === 'ar' ? 'English' : 'العربية'}</span>
           </button>
 
+          {/* Cart Button (Single) */}
           <button className="btn btn-secondary cart-nav-btn" onClick={onOpenCart}>
             <ShoppingBag size={18} />
+            <span className="cart-label desktop-only">{t.cart}</span>
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
 
+          {/* Desktop User Profile / Sign In */}
+          <div className="desktop-only">
+            {user ? (
+              <div className="user-profile-badge">
+                <span className="user-name">
+                  {user.name} {user.role === 'admin' && <span className="admin-tag">({t.adminTag})</span>}
+                </span>
+                <button className="btn btn-secondary icon-btn" onClick={onLogout} title={t.signOut}>
+                  <LogOut size={16} />
+                </button>
+              </div>
+            ) : (
+              <button className="btn btn-primary" onClick={onOpenAuth}>
+                <UserIcon size={18} />
+                <span>{t.signIn}</span>
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Hamburger Toggle Button (Shown only on mobile) */}
           <button
-            className="mobile-toggle-btn"
+            className="mobile-toggle-btn mobile-only"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
           >

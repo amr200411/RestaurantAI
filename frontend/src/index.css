@@ -239,6 +239,12 @@ body {
   border-color: rgba(6, 182, 212, 0.3);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .cart-nav-btn {
   position: relative;
 }
@@ -285,19 +291,13 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* Mobile Specific Actions & Dropdown */
+/* Visibility Rules */
 .desktop-only {
-  display: flex;
+  display: flex !important;
 }
 
 .mobile-only {
-  display: none;
-}
-
-.mobile-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: none !important;
 }
 
 .mobile-toggle-btn {
@@ -307,7 +307,6 @@ body {
   padding: 8px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
@@ -793,5 +792,9 @@ body {
   .btn {
     padding: 8px 14px;
     font-size: 0.88rem;
+  }
+
+  .cart-label {
+    display: none;
   }
 }
