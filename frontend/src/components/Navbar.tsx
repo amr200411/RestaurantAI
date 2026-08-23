@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Bot, Utensils, Shield, User as UserIcon, LogOut, Clock, Menu as MenuIcon, X } from 'lucide-react';
+import { ShoppingBag, Bot, Utensils, Shield, User as UserIcon, LogOut, Clock, Menu as MenuIcon, X, Globe } from 'lucide-react';
 import type { User } from '../types';
+import type { Language } from '../i18n';
 
 interface NavbarProps {
   activeTab: 'menu' | 'orders' | 'admin';
@@ -11,6 +12,9 @@ interface NavbarProps {
   onOpenAuth: () => void;
   user: User | null;
   onLogout: () => void;
+  lang: Language;
+  onToggleLang: () => void;
+  t: any;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -22,6 +26,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAuth,
   user,
   onLogout,
+  lang,
+  onToggleLang,
+  t,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -52,12 +59,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setActiveTab('menu')}
           >
             <Utensils size={18} />
-            Menu
+            {t.menu}
           </button>
 
           <button className="nav-item ai-nav-btn" onClick={onOpenAI}>
             <Bot size={18} />
-            AI Assistant
+            {t.aiAdvisor}
           </button>
 
           {user && (
@@ -66,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('orders')}
             >
               <Clock size={18} />
-              My Orders
+              {t.myOrders}
             </button>
           )}
 
@@ -76,35 +83,46 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setActiveTab('admin')}
             >
               <Shield size={18} />
-              Admin Dashboard
+              {t.adminDashboard}
             </button>
           )}
 
+          {/* Language Switcher Toggle */}
+          <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} title="Switch Language / تغيير اللغة">
+            <Globe size={18} style={{ color: 'var(--primary)' }} />
+            <span>{lang === 'ar' ? 'English' : 'العربية'}</span>
+          </button>
+
           <button className="btn btn-secondary cart-nav-btn" onClick={onOpenCart}>
             <ShoppingBag size={18} />
-            Cart
+            {t.cart}
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
 
           {user ? (
             <div className="user-profile-badge">
               <span className="user-name">
-                {user.name} {user.role === 'admin' && <span className="admin-tag">(Admin)</span>}
+                {user.name} {user.role === 'admin' && <span className="admin-tag">({t.adminTag})</span>}
               </span>
-              <button className="btn btn-secondary icon-btn" onClick={onLogout} title="Logout">
+              <button className="btn btn-secondary icon-btn" onClick={onLogout} title={t.signOut}>
                 <LogOut size={16} />
               </button>
             </div>
           ) : (
             <button className="btn btn-primary" onClick={onOpenAuth}>
               <UserIcon size={18} />
-              Sign In
+              {t.signIn}
             </button>
           )}
         </nav>
 
-        {/* Mobile Quick Action Group (Cart + Hamburger Toggle) */}
+        {/* Mobile Quick Action Group (Lang + Cart + Hamburger Toggle) */}
         <div className="mobile-actions mobile-only">
+          <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} style={{ padding: '6px 10px', fontSize: '0.8rem' }}>
+            <Globe size={16} style={{ color: 'var(--primary)' }} />
+            <span>{lang === 'ar' ? 'EN' : 'عربي'}</span>
+          </button>
+
           <button className="btn btn-secondary cart-nav-btn" onClick={onOpenCart}>
             <ShoppingBag size={18} />
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
@@ -128,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick(() => setActiveTab('menu'))}
           >
             <Utensils size={20} />
-            <span>Browse Menu</span>
+            <span>{t.menu}</span>
           </button>
 
           <button
@@ -136,7 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick(onOpenAI)}
           >
             <Bot size={20} />
-            <span>AI Food Advisor</span>
+            <span>{t.aiAdvisor}</span>
           </button>
 
           {user && (
@@ -145,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick(() => setActiveTab('orders'))}
             >
               <Clock size={20} />
-              <span>My Live Orders</span>
+              <span>{t.myOrders}</span>
             </button>
           )}
 
@@ -155,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick(() => setActiveTab('admin'))}
             >
               <Shield size={20} />
-              <span>Admin Control Dashboard</span>
+              <span>{t.adminDashboard}</span>
             </button>
           )}
 
@@ -168,7 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div>
                   <div style={{ fontWeight: 700, color: '#fff' }}>{user.name}</div>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                    {user.email} {user.role === 'admin' && '• Admin'}
+                    {user.email} {user.role === 'admin' && `• ${t.adminTag}`}
                   </div>
                 </div>
               </div>
@@ -177,7 +195,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 style={{ width: '100%', marginTop: '10px' }}
                 onClick={() => handleNavClick(onLogout)}
               >
-                <LogOut size={18} /> Sign Out
+                <LogOut size={18} /> {t.signOut}
               </button>
             </div>
           ) : (
@@ -186,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               style={{ width: '100%' }}
               onClick={() => handleNavClick(onOpenAuth)}
             >
-              <UserIcon size={18} /> Sign In / Register
+              <UserIcon size={18} /> {t.signIn}
             </button>
           )}
         </div>

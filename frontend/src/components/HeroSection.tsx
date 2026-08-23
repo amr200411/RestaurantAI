@@ -3,9 +3,10 @@ import { Sparkles, Send } from 'lucide-react';
 
 interface HeroSectionProps {
   onAskAI: (query: string) => void;
+  t: any;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onAskAI }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onAskAI, t }) => {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,22 +17,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onAskAI }) => {
   };
 
   const sampleChips = [
-    'أريد وجبة رخيصة بدون دجاج',
-    'ما أفضل وجبة لشخصين بأقل من 500 ليرة؟',
-    'أقترح لي تحلية مميزة مع عصير طازج',
-    'Vegetarian pizza options under 200₺',
+    t.chip1,
+    t.chip2,
+    t.chip3,
+    t.chip4,
   ];
 
   return (
     <section className="hero-section">
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '9999px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', color: 'var(--primary)', fontWeight: 600, fontSize: '0.85rem', marginBottom: '20px' }}>
-        <Sparkles size={16} /> Powered by AI Culinary Assistant
+        <Sparkles size={16} /> RestaurantAI Culinary Assistant
       </div>
 
-      <h1 className="hero-title">Delicious Gourmet Dining & Smart AI Ordering</h1>
-      <p className="hero-subtitle">
-        Browse our handcrafted artisanal menu or ask our AI assistant to recommend the perfect dish tailored to your exact taste, budget, and dietary preferences.
-      </p>
+      <h1 className="hero-title">{t.heroTitle}</h1>
+      <p className="hero-subtitle">{t.heroSubtitle}</p>
 
       <div className="ai-search-box">
         <form onSubmit={handleSubmit} className="ai-input-wrapper">
@@ -39,12 +38,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onAskAI }) => {
           <input
             type="text"
             className="ai-input"
-            placeholder="Ask AI: 'أريد وجبة رخيصة بدون دجاج' or 'Best pizza for 2 under 300₺'..."
+            placeholder={t.aiSearchPlaceholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <button type="submit" className="btn btn-ai" style={{ borderRadius: '9999px', padding: '8px 22px' }}>
-            <Send size={16} /> Ask AI
+            <Send size={16} /> {t.askAI}
           </button>
         </form>
 

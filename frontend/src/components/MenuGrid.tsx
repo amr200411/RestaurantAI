@@ -10,6 +10,7 @@ interface MenuGridProps {
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onAddToCart: (product: Product) => void;
+  t: any;
 }
 
 export const MenuGrid: React.FC<MenuGridProps> = ({
@@ -20,6 +21,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
   searchQuery,
   onSearchChange,
   onAddToCart,
+  t,
 }) => {
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
 
@@ -35,7 +37,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
     <section>
       <div className="section-header">
         <div>
-          <h2 className="section-title">Explore Our Menu</h2>
+          <h2 className="section-title">{t.allCategories}</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
             Freshly prepared with premium ingredients
           </p>
@@ -56,7 +58,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
             type="text"
             className="form-input"
             style={{ paddingLeft: '38px', borderRadius: '9999px' }}
-            placeholder="Search dish name..."
+            placeholder={t.searchDishes}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
           />
@@ -68,7 +70,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
           className={`category-pill ${selectedCategory === null ? 'active' : ''}`}
           onClick={() => onSelectCategory(null)}
         >
-          All Dishes
+          {t.allCategories}
         </button>
         {categories.map((cat) => (
           <button
@@ -111,7 +113,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                   onClick={() => handleAdd(product)}
                 >
                   {addedIds[product.id] ? <Check size={18} /> : <Plus size={18} />}
-                  {addedIds[product.id] ? 'Added to Order' : product.is_available ? 'Add to Cart' : 'Unavailable'}
+                  {addedIds[product.id] ? 'Added' : product.is_available ? t.addToCart : t.unavailable}
                 </button>
               </div>
             </div>

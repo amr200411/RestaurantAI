@@ -9,6 +9,9 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { AuthModal } from './components/AuthModal';
 
 import type { Category, Product, CartItem, Order, User } from './types';
+import { translations } from './i18n';
+import type { Language } from './i18n';
+
 
 import {
   fetchCategories,
@@ -26,6 +29,27 @@ export function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Language State (Default: 'ar')
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('restaurant_ai_lang');
+    return (saved as Language) || 'ar';
+  });
+
+  const t = translations[lang];
+
+  const handleToggleLang = () => {
+    setLang((prev) => {
+      const nextLang = prev === 'ar' ? 'en' : 'ar';
+      localStorage.setItem('restaurant_ai_lang', nextLang);
+      return nextLang;
+    });
+  };
+
+  useEffect(() => {
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   // Cart State
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -123,7 +147,7 @@ export function App() {
     if (!user) {
       setIsCartOpen(false);
       setIsAuthOpen(true);
-      throw new Error('Please sign in to place an order.');
+      throw new Error(lang === 'ar' ? 'يرجى تسجيل الدخول أولاً لإتمام الطلب.' : 'Please sign in to place an order.');
     }
 
     const orderPayload = cart.map((item) => ({
@@ -172,12 +196,15 @@ export function App() {
         onOpenAuth={() => setIsAuthOpen(true)}
         user={user}
         onLogout={handleLogout}
+        lang={lang}
+        onToggleLang={handleToggleLang}
+        t={t}
       />
 
       <main>
         {activeTab === 'menu' && (
           <>
-            <HeroSection onAskAI={handleAskAI} />
+            <HeroSection onAskAI={handleAskAI} t={t} />
             <MenuGrid
               categories={categories}
               products={filteredProducts}
@@ -186,6 +213,7 @@ export function App() {
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               onAddToCart={handleAddToCart}
+              t={t}
             />
           </>
         )}
