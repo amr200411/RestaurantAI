@@ -48,8 +48,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             setMobileMenuOpen(false);
           }}
         >
-          <Utensils className="w-8 h-8 text-amber-500" style={{ color: 'var(--primary)' }} />
-          Restaurant<span>AI</span>
+          <Utensils style={{ color: 'var(--primary)', flexShrink: 0 }} size={24} />
+          <span>Restaurant<strong>AI</strong></span>
         </div>
 
         {/* Desktop Navigation Links */}
@@ -90,15 +90,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Header Action Group (Single & Unified) */}
         <div className="header-actions">
-          {/* Language Switcher Button (Single) */}
+          {/* Language Switcher Button */}
           <button className="btn btn-secondary lang-toggle-btn" onClick={onToggleLang} title="Switch Language / تغيير اللغة">
-            <Globe size={18} style={{ color: 'var(--primary)' }} />
-            <span className="lang-label">{lang === 'ar' ? 'English' : 'العربية'}</span>
+            <Globe size={16} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+            <span className="desktop-only">{lang === 'ar' ? 'English' : 'العربية'}</span>
+            <span className="mobile-only" style={{ fontSize: '0.8rem', fontWeight: 700 }}>{lang === 'ar' ? 'EN' : 'عربي'}</span>
           </button>
 
-          {/* Cart Button (Single) */}
+          {/* Cart Button */}
           <button className="btn btn-secondary cart-nav-btn" onClick={onOpenCart}>
-            <ShoppingBag size={18} />
+            <ShoppingBag size={16} style={{ flexShrink: 0 }} />
             <span className="cart-label desktop-only">{t.cart}</span>
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
@@ -122,13 +123,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Mobile Hamburger Toggle Button (Shown only on mobile) */}
+          {/* Mobile Hamburger Toggle Button */}
           <button
             className="mobile-toggle-btn mobile-only"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Navigation Menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <MenuIcon size={24} />}
+            {mobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
           </button>
         </div>
       </div>
