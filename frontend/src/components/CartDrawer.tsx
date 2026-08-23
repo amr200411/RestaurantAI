@@ -80,17 +80,22 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '12px 0',
+                    padding: '14px 0',
                     borderBottom: '1px solid var(--border-light)',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     {product.image_url && (
-                      <img src={product.image_url} alt={product.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
+                      <img src={product.image_url} alt={product.name} style={{ width: '52px', height: '52px', objectFit: 'cover', borderRadius: '8px' }} />
                     )}
                     <div>
                       <h4 style={{ fontWeight: 600, fontSize: '0.95rem' }}>{product.name}</h4>
-                      <span style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.9rem' }}>{product.price} ₺</span>
+                      <div style={{ fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+                        <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{product.price} ₺</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                          × {quantity} = <strong style={{ color: '#fff', fontWeight: 700 }}>{(product.price * quantity).toFixed(2)} ₺</strong>
+                        </span>
+                      </div>
                     </div>
                   </div>
 
