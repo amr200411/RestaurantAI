@@ -12,7 +12,6 @@ import type { Category, Product, CartItem, Order, User } from './types';
 import { translations } from './i18n';
 import type { Language } from './i18n';
 
-
 import {
   fetchCategories,
   fetchProducts,
@@ -218,7 +217,7 @@ export function App() {
           </>
         )}
 
-        {activeTab === 'orders' && <OrdersView orders={myOrders} />}
+        {activeTab === 'orders' && <OrdersView orders={myOrders} t={t} />}
 
         {activeTab === 'admin' && (
           <AdminDashboard
@@ -229,6 +228,7 @@ export function App() {
               loadData();
               loadUserAndOrders();
             }}
+            t={t}
           />
         )}
       </main>
@@ -247,12 +247,14 @@ export function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveFromCart}
         onCheckout={handleCheckout}
+        t={t}
       />
 
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
         onSuccess={handleAuthSuccess}
+        t={t}
       />
     </div>
   );

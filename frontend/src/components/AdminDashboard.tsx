@@ -8,6 +8,7 @@ interface AdminDashboardProps {
   categories: Category[];
   orders: Order[];
   onRefreshData: () => void;
+  t: any;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -15,6 +16,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   categories,
   orders,
   onRefreshData,
+  t,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'orders' | 'products' | 'ai'>('orders');
   const [showProductModal, setShowProductModal] = useState(false);
@@ -34,7 +36,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     {
       query: 'Initial System Digest',
       reply: 'مرحباً بك في مساعد الأعمال الذكي من RestaurantAI! يمكنك وسؤالي باللغة العربية أو الإنجليزية حول أداء المطعم، تحليل المبيعات، استدعاء الأدوات التحليلية وتوفير توصيات قائمة على بيانات قاعدة البيانات المباشرة.',
-      engine: 'Google Gemini 2.5 Flash (Function Calling)',
+      engine: 'Google Gemini 3.6 Flash (Function Calling)',
     },
   ]);
 
@@ -147,10 +149,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="section-header">
         <div>
           <h2 className="section-title">
-            <Shield style={{ color: '#06b6d4' }} /> Admin Control Dashboard
+            <Shield style={{ color: '#06b6d4' }} /> {t.adminTitle}
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Manage menu items, live order statuses, and Gemini AI business intelligence
+            {t.adminSub}
           </p>
         </div>
       </div>
@@ -159,7 +161,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            <span>Total Revenue</span>
+            <span>{t.totalRevenue}</span>
             <DollarSign size={20} style={{ color: 'var(--accent-green)' }} />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--accent-green)' }}>{totalRevenue.toFixed(2)} ₺</div>
@@ -167,7 +169,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            <span>Total Orders</span>
+            <span>{t.totalOrders}</span>
             <ShoppingBag size={20} style={{ color: 'var(--primary)' }} />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800 }}>{orders.length}</div>
@@ -175,7 +177,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            <span>Pending Orders</span>
+            <span>{t.pendingOrders}</span>
             <Clock size={20} style={{ color: '#eab308' }} />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#eab308' }}>{pendingCount}</div>
@@ -183,7 +185,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            <span>Menu Products</span>
+            <span>{t.menuProducts}</span>
             <PackageCheck size={20} style={{ color: '#06b6d4' }} />
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800 }}>{products.length}</div>
@@ -196,20 +198,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           className={`btn ${activeSubTab === 'orders' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => setActiveSubTab('orders')}
         >
-          Orders Management ({orders.length})
+          {t.ordersMgmt} ({orders.length})
         </button>
         <button
           className={`btn ${activeSubTab === 'products' ? 'btn-primary' : 'btn-secondary'}`}
           onClick={() => setActiveSubTab('products')}
         >
-          Products Management ({products.length})
+          {t.productsMgmt} ({products.length})
         </button>
         <button
           className={`btn ${activeSubTab === 'ai' ? 'btn-ai' : 'btn-secondary'}`}
           onClick={() => setActiveSubTab('ai')}
           style={{ color: activeSubTab === 'ai' ? '#fff' : '#ec4899' }}
         >
-          <Bot size={18} /> AI Business Assistant (Gemini LLM)
+          <Bot size={18} /> {t.aiAdminAssistant}
         </button>
       </div>
 
@@ -221,9 +223,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <Bot size={24} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: 700 }}>Google Gemini LLM Business Executive</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 700 }}>{t.aiExecutiveTitle}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                Ask natural language strategic questions. Gemini will invoke backend database tools to query PostgreSQL and analyze performance.
+                {t.aiExecutiveSub}
               </p>
             </div>
           </div>
@@ -292,12 +294,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <input
               type="text"
               className="form-input"
-              placeholder="Ask e.g. 'ما المنتج الذي تنصحني أركز عليه؟ ولماذا؟' or 'Analyze sales and give 3 recommendations'..."
+              placeholder={t.askGeminiPlaceholder}
               value={aiQuery}
               onChange={(e) => setAiQuery(e.target.value)}
             />
             <button type="submit" className="btn btn-ai" disabled={aiLoading}>
-              <Send size={16} /> Ask Gemini
+              <Send size={16} /> {t.askGeminiBtn}
             </button>
           </form>
         </div>
@@ -309,11 +311,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-light)', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                <th style={{ padding: '12px' }}>ORDER ID</th>
-                <th style={{ padding: '12px' }}>ITEMS</th>
-                <th style={{ padding: '12px' }}>TOTAL</th>
-                <th style={{ padding: '12px' }}>STATUS</th>
-                <th style={{ padding: '12px', textAlign: 'right' }}>ACTIONS</th>
+                <th style={{ padding: '12px' }}>{t.orderId}</th>
+                <th style={{ padding: '12px' }}>الأصناف</th>
+                <th style={{ padding: '12px' }}>{t.orderTotal}</th>
+                <th style={{ padding: '12px' }}>{t.orderStatus}</th>
+                <th style={{ padding: '12px', textAlign: 'right' }}>{t.actions}</th>
               </tr>
             </thead>
             <tbody>
@@ -335,17 +337,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       className="form-select"
                       style={{ padding: '6px 12px', width: 'auto', fontSize: '0.85rem', fontWeight: 600 }}
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Preparing">Preparing</option>
-                      <option value="Ready">Ready</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
+                      <option value="Pending">Pending (معلق)</option>
+                      <option value="Confirmed">Confirmed (مؤكد)</option>
+                      <option value="Preparing">Preparing (جاري التحضير)</option>
+                      <option value="Ready">Ready (جاهز)</option>
+                      <option value="Delivered">Delivered (تم التوصيل)</option>
+                      <option value="Cancelled">Cancelled (ملغي)</option>
                     </select>
                   </td>
                   <td style={{ padding: '14px', textAlign: 'right' }}>
                     <button className="btn btn-danger" style={{ padding: '6px 12px' }} onClick={() => handleDeleteOrder(o.id)}>
-                      <Trash2 size={14} /> Delete
+                      <Trash2 size={14} /> {t.delete}
                     </button>
                   </td>
                 </tr>
@@ -360,7 +362,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
             <button className="btn btn-primary" onClick={() => handleOpenProductModal()}>
-              <Plus size={18} /> Add New Dish
+              <Plus size={18} /> {t.addNewDish}
             </button>
           </div>
 
@@ -368,11 +370,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border-light)', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                  <th style={{ padding: '12px' }}>DISH</th>
-                  <th style={{ padding: '12px' }}>PRICE</th>
-                  <th style={{ padding: '12px' }}>CATEGORY</th>
-                  <th style={{ padding: '12px' }}>STATUS</th>
-                  <th style={{ padding: '12px', textAlign: 'right' }}>ACTIONS</th>
+                  <th style={{ padding: '12px' }}>{t.dishName}</th>
+                  <th style={{ padding: '12px' }}>{t.price}</th>
+                  <th style={{ padding: '12px' }}>{t.category}</th>
+                  <th style={{ padding: '12px' }}>{t.orderStatus}</th>
+                  <th style={{ padding: '12px', textAlign: 'right' }}>{t.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -389,7 +391,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <td style={{ padding: '14px', color: 'var(--text-muted)' }}>{p.category?.name || 'General'}</td>
                     <td style={{ padding: '14px' }}>
                       <span style={{ padding: '4px 10px', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 700, background: p.is_available ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: p.is_available ? '#10b981' : '#ef4444' }}>
-                        {p.is_available ? 'Available' : 'Unavailable'}
+                        {p.is_available ? t.available : t.unavailable}
                       </span>
                     </td>
                     <td style={{ padding: '14px', textAlign: 'right' }}>
@@ -413,7 +415,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         <div className="modal-overlay" onClick={() => setShowProductModal(false)}>
           <div className="modal-content glass-card" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>{editingProduct ? 'Edit Dish' : 'Add New Dish'}</h3>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>{editingProduct ? `${t.edit} ${editingProduct.name}` : t.addNewDish}</h3>
               <button onClick={() => setShowProductModal(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                 <X size={20} />
               </button>
@@ -421,17 +423,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             <form onSubmit={handleSaveProduct}>
               <div className="form-group">
-                <label className="form-label">Dish Name</label>
+                <label className="form-label">{t.dishName}</label>
                 <input type="text" className="form-input" required value={pName} onChange={(e) => setPName(e.target.value)} />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Price (₺)</label>
+                <label className="form-label">{t.price}</label>
                 <input type="number" step="0.01" className="form-input" required value={pPrice} onChange={(e) => setPPrice(e.target.value)} />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Category</label>
+                <label className="form-label">{t.category}</label>
                 <select className="form-select" value={pCategory} onChange={(e) => setPCategory(e.target.value)}>
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -442,17 +444,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
 
               <div className="form-group">
-                <label className="form-label">Image URL</label>
+                <label className="form-label">رابط الصورة (Image URL)</label>
                 <input type="text" className="form-input" value={pImage} onChange={(e) => setPImage(e.target.value)} placeholder="https://..." />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Description</label>
+                <label className="form-label">الوصف التفصيلي (Description)</label>
                 <textarea className="form-textarea" rows={3} value={pDesc} onChange={(e) => setPDesc(e.target.value)} />
               </div>
 
               <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '10px' }}>
-                Save Dish
+                {t.saveDish}
               </button>
             </form>
           </div>

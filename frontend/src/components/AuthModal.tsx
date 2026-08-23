@@ -7,9 +7,10 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (user: User, token: string) => void;
+  t: any;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess, t }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -62,16 +63,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         </button>
 
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>{isLogin ? 'Sign In' : 'Create Account'}</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>{isLogin ? t.signIn : t.createAccount}</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
-            Access your orders or manage RestaurantAI
+            {isLogin ? t.welcomeBack : t.createAccount}
           </p>
         </div>
 
         {/* Quick Demo Customer Button */}
         <div style={{ marginBottom: '20px' }}>
           <button className="btn btn-secondary" style={{ width: '100%', fontSize: '0.85rem' }} onClick={handleQuickDemoCustomer}>
-            👤 Quick Demo Customer Login
+            👤 {t.quickDemoCustomer}
           </button>
         </div>
 
@@ -80,13 +81,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             style={{ flex: 1, padding: '10px', background: 'transparent', border: 'none', color: isLogin ? 'var(--primary)' : 'var(--text-muted)', borderBottom: isLogin ? '2px solid var(--primary)' : 'none', fontWeight: 600, cursor: 'pointer' }}
             onClick={() => setIsLogin(true)}
           >
-            Sign In
+            {t.signIn}
           </button>
           <button
             style={{ flex: 1, padding: '10px', background: 'transparent', border: 'none', color: !isLogin ? 'var(--primary)' : 'var(--text-muted)', borderBottom: !isLogin ? '2px solid var(--primary)' : 'none', fontWeight: 600, cursor: 'pointer' }}
             onClick={() => setIsLogin(false)}
           >
-            Register
+            {t.createAccount}
           </button>
         </div>
 
@@ -99,23 +100,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="form-group">
-              <label className="form-label">Full Name</label>
-              <input type="text" className="form-input" required value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" />
+              <label className="form-label">{t.nameLabel}</label>
+              <input type="text" className="form-input" required value={name} onChange={(e) => setName(e.target.value)} placeholder="مثال: أحمد علي" />
             </div>
           )}
 
           <div className="form-group">
-            <label className="form-label">Email Address</label>
+            <label className="form-label">{t.emailLabel}</label>
             <input type="email" className="form-input" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label">{t.passwordLabel}</label>
             <input type="password" className="form-input" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
           </div>
 
           <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>
-            {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
+            {loading ? '...' : isLogin ? t.signIn : t.createAccount}
           </button>
         </form>
       </div>

@@ -4,9 +4,10 @@ import type { Order, OrderStatus } from '../types';
 
 interface OrdersViewProps {
   orders: Order[];
+  t: any;
 }
 
-export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
+export const OrdersView: React.FC<OrdersViewProps> = ({ orders, t }) => {
   const getStatusIcon = (status: OrderStatus) => {
     switch (status) {
       case 'Pending':
@@ -26,13 +27,25 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
     }
   };
 
+  const statusLabel = (status: OrderStatus) => {
+    const map: Record<OrderStatus, string> = {
+      Pending: 'قيد الانتظار',
+      Confirmed: 'تم التأكيد',
+      Preparing: 'جاري التحضير',
+      Ready: 'جاهز للتسليم',
+      Delivered: 'تم التوصيل',
+      Cancelled: 'ملغي',
+    };
+    return map[status] || status;
+  };
+
   return (
     <section>
       <div className="section-header">
         <div>
-          <h2 className="section-title">My Orders</h2>
+          <h2 className="section-title">{t.ordersTitle}</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Track your live order status and view past dining history
+            {t.ordersSub}
           </p>
         </div>
       </div>
@@ -40,8 +53,8 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
       {orders.length === 0 ? (
         <div className="glass-card" style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
           <Clock size={48} style={{ margin: '0 auto 15px auto', opacity: 0.4 }} />
-          <h3>No orders placed yet</h3>
-          <p>Order your favorite meals from our menu!</p>
+          <h3>{t.noOrders}</h3>
+          <p>{t.emptyCartSub}</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -49,13 +62,13 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
             <div key={order.id} className="glass-card" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Order ID</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>{t.orderId}</span>
                   <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>#{order.id.slice(0, 8)}</div>
                 </div>
 
                 <div className={`status-badge status-${order.status}`}>
                   {getStatusIcon(order.status)}
-                  {order.status}
+                  {statusLabel(order.status)}
                 </div>
               </div>
 
@@ -69,7 +82,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
               </div>
 
               <div style={{ marginTop: '15px', borderTop: '1px solid var(--border-light)', paddingTop: '15px' }}>
-                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '10px' }}>Ordered Items:</h4>
+                <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '10px' }}>الأصناف المطلوبة:</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {order.items.map((item, idx) => (
                     <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
@@ -83,7 +96,7 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders }) => {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '18px', paddingTop: '15px', borderTop: '1px dashed var(--border-light)' }}>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Total Price</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{t.totalPrice}</span>
                 <span style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)' }}>{order.total_price} ₺</span>
               </div>
             </div>

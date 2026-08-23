@@ -9,6 +9,7 @@ interface CartDrawerProps {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onCheckout: () => Promise<void>;
+  t: any;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -18,6 +19,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onCheckout,
+  t,
 }) => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -49,7 +51,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <ShoppingBag style={{ color: 'var(--primary)' }} size={24} />
-            <h2 style={{ fontSize: '1.3rem', fontWeight: 700 }}>Your Order Cart</h2>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 700 }}>{t.cartTitle}</h2>
           </div>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
             <X size={24} />
@@ -59,14 +61,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         {success ? (
           <div style={{ textAlign: 'center', margin: 'auto 0' }}>
             <CheckCircle2 size={64} style={{ color: 'var(--accent-green)', margin: '0 auto 15px auto' }} />
-            <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '10px' }}>Order Placed Successfully!</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Your order is being sent directly to the kitchen.</p>
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '10px' }}>{t.orderSuccess}</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{t.ordersSub}</p>
           </div>
         ) : items.length === 0 ? (
           <div style={{ textAlign: 'center', margin: 'auto 0', color: 'var(--text-muted)' }}>
             <ShoppingBag size={54} style={{ margin: '0 auto 15px auto', opacity: 0.3 }} />
-            <h3>Your cart is empty</h3>
-            <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>Select delicious dishes from our menu to begin.</p>
+            <h3>{t.emptyCart}</h3>
+            <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>{t.emptyCartSub}</p>
           </div>
         ) : (
           <>
@@ -121,12 +123,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
             <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-light)' }}>
               <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', marginBottom: '15px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Payment Method</span>
-                <span style={{ fontWeight: 700, color: 'var(--accent-green)' }}>💵 Cash on Delivery</span>
+                <span style={{ color: 'var(--text-muted)' }}>طريقة الدفع</span>
+                <span style={{ fontWeight: 700, color: 'var(--accent-green)' }}>💵 الدفع عند الاستلام</span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)' }}>Total Amount</span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)' }}>{t.totalPrice}</span>
                 <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)' }}>{total.toFixed(2)} ₺</span>
               </div>
 
@@ -136,7 +138,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 disabled={submitting}
                 onClick={handleCheckoutSubmit}
               >
-                {submitting ? 'Placing Order...' : 'Confirm & Place Order'}
+                {submitting ? '...' : t.checkout}
                 <ArrowRight size={18} />
               </button>
             </div>
