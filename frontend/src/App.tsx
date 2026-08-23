@@ -142,7 +142,7 @@ export function App() {
     setCart((prev) => prev.filter((item) => item.product.id !== productId));
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (address?: string, notes?: string) => {
     if (!user) {
       setIsCartOpen(false);
       setIsAuthOpen(true);
@@ -154,7 +154,7 @@ export function App() {
       quantity: item.quantity,
     }));
 
-    await createOrder(orderPayload, user.id);
+    await createOrder(orderPayload, user.id, address, notes);
     setCart([]);
     await loadUserAndOrders();
     setActiveTab('orders');

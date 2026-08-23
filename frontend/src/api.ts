@@ -104,14 +104,24 @@ export async function deleteProduct(id: string): Promise<void> {
   }
 }
 
-export async function createOrder(items: { product_id: string; quantity: number }[], userId?: string): Promise<Order> {
+export async function createOrder(
+  items: { product_id: string; quantity: number }[],
+  userId?: string,
+  deliveryAddress?: string,
+  notes?: string
+): Promise<Order> {
   const res = await fetch(`${API_BASE_URL}/orders/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...getAuthHeader(),
     },
-    body: JSON.stringify({ user_id: userId, items }),
+    body: JSON.stringify({
+      user_id: userId,
+      items,
+      delivery_address: deliveryAddress || 'Standard Delivery Address',
+      notes,
+    }),
   });
   if (!res.ok) {
     const err = await res.json();

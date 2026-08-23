@@ -32,6 +32,17 @@ class Order(Base):
         default=0
     )
 
+    delivery_address = Column(
+        String(255),
+        nullable=True,
+        default="Standard Delivery Address"
+    )
+
+    notes = Column(
+        String(255),
+        nullable=True
+    )
+
     user = relationship(
         "User",
         back_populates="orders"

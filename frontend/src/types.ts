@@ -43,6 +43,8 @@ export interface Order {
   user_id: string;
   status: OrderStatus;
   total_price: number;
+  delivery_address?: string;
+  notes?: string;
   items: OrderItem[];
   created_at?: string;
 }

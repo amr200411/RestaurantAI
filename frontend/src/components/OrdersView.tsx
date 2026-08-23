@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, CheckCircle2, PackageCheck, Flame, Bike, AlertCircle } from 'lucide-react';
+import { Clock, CheckCircle2, PackageCheck, Flame, Bike, AlertCircle, MapPin } from 'lucide-react';
 import type { Order, OrderStatus } from '../types';
 
 interface OrdersViewProps {
@@ -64,6 +64,17 @@ export const OrdersView: React.FC<OrdersViewProps> = ({ orders, t }) => {
                 <div>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>{t.orderId}</span>
                   <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>#{order.id.slice(0, 8)}</div>
+                  {order.delivery_address && (
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                      <MapPin size={14} style={{ color: 'var(--primary)' }} />
+                      <span>{order.delivery_address}</span>
+                    </div>
+                  )}
+                  {order.notes && (
+                    <div style={{ fontSize: '0.82rem', color: '#eab308', marginTop: '2px' }}>
+                      📝 {order.notes}
+                    </div>
+                  )}
                 </div>
 
                 <div className={`status-badge status-${order.status}`}>

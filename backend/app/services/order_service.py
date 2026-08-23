@@ -18,7 +18,9 @@ def create_order(db: Session, order_data: OrderCreate, current_user_id: UUID | N
 
     order = Order(
         user_id=user_id,
-        status="Pending"
+        status="Pending",
+        delivery_address=order_data.delivery_address or "Standard Delivery Address",
+        notes=order_data.notes
     )
 
     db.add(order)

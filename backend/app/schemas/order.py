@@ -15,6 +15,8 @@ class OrderItemCreate(BaseModel):
 class OrderCreate(BaseModel):
     user_id: Optional[UUID] = None
     items: List[OrderItemCreate]
+    delivery_address: Optional[str] = "Standard Delivery Address"
+    notes: Optional[str] = None
 
 
 class OrderItemResponse(BaseModel):
@@ -33,6 +35,8 @@ class OrderResponse(BaseModel):
     user_id: UUID
     status: str
     total_price: Decimal
+    delivery_address: Optional[str] = None
+    notes: Optional[str] = None
     items: List[OrderItemResponse]
 
     class Config:

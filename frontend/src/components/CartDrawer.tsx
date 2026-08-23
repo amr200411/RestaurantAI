@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShoppingBag, Plus, Minus, Trash2, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, ShoppingBag, Plus, Minus, Trash2, CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
 import type { CartItem } from '../types';
 
 interface CartDrawerProps {
@@ -8,7 +8,7 @@ interface CartDrawerProps {
   items: CartItem[];
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
-  onCheckout: () => Promise<void>;
+  onCheckout: (address: string, notes: string) => Promise<void>;
   t: any;
 }
 
@@ -21,6 +21,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onCheckout,
   t,
 }) => {
+  const [address, setAddress] = useState('');
+  const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -32,7 +34,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     if (items.length === 0) return;
     setSubmitting(true);
     try {
-      await onCheckout();
+      await onCheckout(address, notes);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -124,22 +126,53 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   </div>
                 </div>
               ))}
+
+              {/* Delivery Address & Notes Input Fields */}
+              <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '12px', border: '1px solid var(--border-light)' }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
+                  <MapPin size={16} /> عنوان وتفاصيل التوصيل (Delivery Address)
+                </h4>
+
+                <div className="form-group" style={{ marginBottom: '12px' }}>
+                  <label className="form-label" style={{ fontSize: '0.82rem' }}>العنوان التفصيلي (المنطقة / الشارع / المبنى)</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="مثال: الرياض، حي الملقا، شارع الأمل، مبنى 14"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    style={{ padding: '8px 12px', fontSize: '0.88rem' }}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" style={{ fontSize: '0.82rem' }}>ملاحظات التوصيل (اختياري)</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="مثال: يرجى عدم الاتصال بالهاتف، الدق على الباب فقط"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    style={{ padding: '8px 12px', fontSize: '0.88rem' }}
+                  />
+                </div>
+              </div>
             </div>
 
-            <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-light)' }}>
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', marginBottom: '15px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+            <div style={{ paddingTop: '15px', borderTop: '1px solid var(--border-light)', marginTop: '10px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: '8px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>طريقة الدفع</span>
                 <span style={{ fontWeight: 700, color: 'var(--accent-green)' }}>💵 الدفع عند الاستلام</span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)' }}>{t.totalPrice}</span>
-                <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)' }}>{total.toFixed(2)} ₺</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-muted)' }}>{t.totalPrice}</span>
+                <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary)' }}>{total.toFixed(2)} ₺</span>
               </div>
 
               <button
                 className="btn btn-primary"
-                style={{ width: '100%', padding: '14px', fontSize: '1.05rem' }}
+                style={{ width: '100%', padding: '12px', fontSize: '1rem' }}
                 disabled={submitting}
                 onClick={handleCheckoutSubmit}
               >
